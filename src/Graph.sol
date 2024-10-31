@@ -23,8 +23,10 @@ contract Graph {
 
         queue.push([start]);
 
+        // BFS
+        uint256 queue_index = 0;
         while (queue.length > 0) {
-            path = queue[0];
+            path = queue[queue_index];
             uint256 current = path[path.length - 1];
 
             if (!visited[current]) {
@@ -46,12 +48,7 @@ contract Graph {
                     }
                 }
             }
-
-            // Doing an unshift, instead of a pop
-            for (uint256 i = 0; i < queue.length - 1; i++) {
-                queue[i] = queue[i + 1];
-            }
-            queue.pop();
+            queue_index += 1;
         }
 
         // Path not found
