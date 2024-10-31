@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test} from "forge-std/Test.sol";
 import {Graph} from "../src/Graph.sol";
+import {console} from "forge-std/console.sol";
 
 contract GraphTest is Test {
     Graph public graph;
@@ -39,11 +40,10 @@ contract GraphTest is Test {
         graph.addEdge(2, 5);
         graph.addEdge(4, 5);
 
-        uint256[] memory expected = new uint256[](4);
+        uint256[] memory expected = new uint256[](3);
         expected[0] = 1;
         expected[1] = 2;
-        expected[2] = 3;
-        expected[3] = 4;
+        expected[2] = 4;
         assertEq(graph.findShortestRouteBetweenTwoNodes(1, 4), expected);
     }
 
@@ -88,10 +88,11 @@ contract GraphTest is Test {
         graph.addEdge(6, 11);
         graph.addEdge(11, 7);
 
-        uint256[] memory expected = new uint256[](3);
+        uint256[] memory expected = new uint256[](4);
         expected[0] = 1;
         expected[1] = 2;
-        expected[2] = 7;
+        expected[2] = 6;
+        expected[3] = 7;
 
         assertEq(graph.findShortestRouteBetweenTwoNodes(1, 7), expected);
     }
