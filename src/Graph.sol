@@ -9,19 +9,15 @@ contract Graph {
 
     uint256[] visited;
     uint256[] path;
-    uint256[] candidate;
     uint256[][] queue;
 
-    // Add a Node, w/o consistency check
     function addEdge(uint256 from, uint256 to) public {
         nodes[from].push(to);
     }
 
-    // Get the shortest path between two nodes
     function findShortestRouteBetweenTwoNodes(uint256 start, uint256 end) public returns (uint256[] memory) {
         // Clear arrays
         delete queue;
-        delete candidate;
         delete path;
         delete visited;
 
@@ -37,11 +33,10 @@ contract Graph {
                     uint256 nextNode = nodes[current][i];
                     if (nextNode == end) {
                         path.push(nextNode);
-                        console.log("candidateLength: ", candidate.length);
-                        if (path.length < candidate.length || candidate.length == 0) {
-                            candidate = path;
-                        }
-                    } else if (!isVisited(nextNode)) {
+                        return path;
+                    }
+
+                    if (!isVisited(nextNode)) {
                         uint256[] memory newPath = new uint256[](path.length + 1);
                         for (uint256 j = 0; j < path.length; j++) {
                             newPath[j] = path[j];
@@ -52,14 +47,15 @@ contract Graph {
                     }
                 }
             }
+
+            // Doing an unshift, instead of a pop
             for (uint256 i = 0; i < queue.length - 1; i++) {
                 queue[i] = queue[i + 1];
             }
             queue.pop();
         }
-        if (candidate.length > 0) {
-            return candidate;
-        }
+
+        // Path not found
         revert("No path found");
     }
 
