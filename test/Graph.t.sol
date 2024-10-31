@@ -71,6 +71,7 @@ contract GraphTest is Test {
     function test_3() public {
         graph.addEdge(1, 2);
         graph.addEdge(2, 3);
+        graph.addEdge(2, 6);
         graph.addEdge(3, 10);
         graph.addEdge(4, 3);
         graph.addEdge(4, 5);
