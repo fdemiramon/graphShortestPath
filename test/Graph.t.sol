@@ -26,12 +26,12 @@ contract GraphTest is Test {
 
     /**
      * #! mermaid
-     * graph TD
-     * 1 --> 2
-     * 2 --> 3
-     * 2 --> 4
-     * 2 --> 5
-     * 4 --> 5
+     *  graph TD
+     *  1 --> 2
+     *  2 --> 3
+     *  2 --> 4
+     *  2 --> 5
+     *  4 --> 5
      */
     function test_2() public {
         graph.addEdge(1, 2);
@@ -48,25 +48,26 @@ contract GraphTest is Test {
     }
 
     /**
-     * graph TD
-     * 1 --- 2
-     * 2 --- 3
-     * 3 --- 10
-     * 4 --- 3
-     * 4 --- 5
-     * 5 --- 6
-     * 6 --- 2
-     * 6 --- 7
-     * 7 --- 4
-     * 7 --- 5
-     * 2 --- 8
-     * 8 --- 3
-     * 3 --- 9
-     * 9 --- 4
-     * 5 --- 10
-     * 10 --- 6
-     * 6 --- 11
-     * 11 --- 7
+     * #! mermaid
+     *     graph TD
+     *     1--> 2
+     *     2--> 3
+     *     3--> 10
+     *     4--> 3
+     *     4--> 5
+     *     5--> 6
+     *     6--> 2
+     *     6--> 7
+     *     7--> 4
+     *     7--> 5
+     *     2--> 8
+     *     8--> 3
+     *     3--> 9
+     *     9--> 4
+     *     5--> 10
+     *     10--> 6
+     *     6--> 11
+     *     11--> 7
      */
     function test_3() public {
         graph.addEdge(1, 2);
@@ -89,12 +90,26 @@ contract GraphTest is Test {
         graph.addEdge(6, 11);
         graph.addEdge(11, 7);
 
-        uint256[] memory expected = new uint256[](4);
+        uint256[] memory expected = new uint256[](6);
         expected[0] = 1;
         expected[1] = 2;
-        expected[2] = 6;
-        expected[3] = 7;
+        expected[2] = 3;
+        expected[3] = 10;
+        expected[4] = 6;
+        expected[5] = 7;
 
         assertEq(graph.findShortestRouteBetweenTwoNodes(1, 7), expected);
+    }
+
+    /**
+     * Test cyclic graph
+     */
+    function test_4() public {
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.addEdge(3, 3);
+
+        vm.expectRevert(bytes("No path found"));
+        graph.findShortestRouteBetweenTwoNodes(1, 4);
     }
 }
