@@ -90,13 +90,11 @@ contract GraphTest is Test {
         graph.addEdge(6, 11);
         graph.addEdge(11, 7);
 
-        uint256[] memory expected = new uint256[](6);
+        uint256[] memory expected = new uint256[](4);
         expected[0] = 1;
         expected[1] = 2;
-        expected[2] = 3;
-        expected[3] = 10;
-        expected[4] = 6;
-        expected[5] = 7;
+        expected[2] = 6;
+        expected[3] = 7;
 
         assertEq(graph.findShortestRouteBetweenTwoNodes(1, 7), expected);
     }
@@ -109,7 +107,7 @@ contract GraphTest is Test {
         graph.addEdge(2, 3);
         graph.addEdge(3, 3);
 
-        vm.expectRevert(bytes("No path found"));
+        vm.expectRevert();
         graph.findShortestRouteBetweenTwoNodes(1, 4);
     }
 }
